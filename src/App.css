@@ -1,0 +1,337 @@
+/* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: #fff0f3;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== FLOATING HEARTS BACKGROUND ===== */
+.floating-hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  font-size: 1.4rem;
+  opacity: 0;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.25;
+  }
+  90% {
+    opacity: 0.18;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(360deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* ===== CARD ===== */
+.card {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 48px 44px;
+  width: 440px;
+  max-width: 92vw;
+  box-shadow:
+    0 4px 24px rgba(255, 182, 193, 0.2),
+    0 12px 48px rgba(255, 105, 135, 0.08);
+  text-align: center;
+  transition: box-shadow 0.4s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 8px 32px rgba(255, 182, 193, 0.3),
+    0 20px 60px rgba(255, 105, 135, 0.12);
+}
+
+/* ===== STATE WRAPPER (for transitions) ===== */
+.state-wrapper {
+  animation: fadeSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== STATE 1: QUESTION ===== */
+.question-emoji {
+  font-size: 3.6rem;
+  display: block;
+  margin-bottom: 8px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.question-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2d2d2d;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.question-subtitle {
+  font-size: 0.95rem;
+  color: #999;
+  margin-bottom: 36px;
+  font-weight: 400;
+}
+
+.button-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 14px 40px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 50%);
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.3);
+}
+
+.btn-yes:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 24px rgba(67, 233, 123, 0.45);
+}
+
+.btn-yes:active {
+  transform: scale(0.97);
+}
+
+.btn-no {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3);
+  /* The "No" button is position: fixed when evading */
+}
+
+.btn-no:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 24px rgba(255, 107, 107, 0.45);
+}
+
+/* Evading No button (fixed position) */
+.btn-no-evading {
+  position: fixed;
+  z-index: 9999;
+  transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              top 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 6px 28px rgba(255, 107, 107, 0.45);
+}
+
+/* ===== STATE 2: DATE PICKER ===== */
+.date-header {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.date-subtext {
+  font-size: 0.92rem;
+  color: #888;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.date-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-family: 'Outfit', sans-serif;
+  border: 2px solid #f0d4e0;
+  border-radius: 14px;
+  background: #fdf6f8;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.date-input:focus {
+  border-color: #f78da7;
+  box-shadow: 0 0 0 4px rgba(247, 141, 167, 0.15);
+}
+
+.btn-confirm {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.btn-confirm:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(102, 126, 234, 0.45);
+}
+
+.btn-confirm:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-confirm:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== STATE 3: SUCCESS ===== */
+.success-emoji {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 12px;
+  animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f78da7 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.success-message {
+  font-size: 0.95rem;
+  color: #777;
+  line-height: 1.65;
+}
+
+.success-message strong {
+  color: #555;
+}
+
+/* ===== CONFETTI ===== */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ===== PULSE RING ON CARD (success state) ===== */
+.card-success {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow:
+      0 4px 24px rgba(255, 182, 193, 0.2),
+      0 12px 48px rgba(255, 105, 135, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 4px 24px rgba(247, 141, 167, 0.35),
+      0 12px 48px rgba(102, 126, 234, 0.18),
+      0 0 60px rgba(247, 141, 167, 0.1);
+  }
+}
